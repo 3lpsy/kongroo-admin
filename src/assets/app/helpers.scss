@@ -1,0 +1,16 @@
+.is-primary.is-dark {
+    background-color: $primary-dark;
+    color: white;
+
+    .menu-label {
+        color: white;
+    }
+    .menu-list li a{
+        color: white;
+    }
+}
+
+
+.content.is-overflow-visible {
+    overflow: visible;
+}

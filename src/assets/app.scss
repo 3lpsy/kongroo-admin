@@ -1,0 +1,28 @@
+body, #app, .App--base {
+    height: 100%;
+}
+$fa-font-path: "~font-awesome/fonts";
+
+@import "~font-awesome/scss/font-awesome";
+
+.ArticleShow__title {
+    margin-bottom: 0px;
+}
+
+@charset "utf-8";
+
+@import "./vendor/bulma/utilities";
+@import "./variables";
+@import "./vendor/bulma/variables";
+
+@import "~bulma/sass/base/base";
+@import "~bulma/sass/elements/elements";
+@import "~bulma/sass/components/components";
+@import "~bulma/sass/layout/layout";
+
+$icon-font-path: './../node_modules/videojs-font/fonts';
+
+@import "./../../node_modules/video.js/src/css/vjs.scss";
+
+@import "./app/helpers";
+@import "./app/components/components";
