@@ -1,8 +1,9 @@
 <template>
-    <app-container :footer="true" :sidebar="true">
-            <slot name="page-nav"></slot>
+    <div class="">
+        <transition name="fade">
             <slot></slot>
-    </app-container>
+        </transition>
+    </div>
 </template>
 
 <script>

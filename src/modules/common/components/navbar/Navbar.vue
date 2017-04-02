@@ -1,118 +1,149 @@
 <template>
-    <section class="hero is-primary is-fullwidth">
-        <div class="hero-head">
-            <div class="container is-fluid">
-                <nav class="nav">
-                    <div class="nav-left">
-                        <span class="hamburger is-toggle" @click="toggleSidebar">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                        </span>
-                        <a class="title nav-item is-brand is-active" href="/">
-                            Sun
-                        </a>
-                    </div>
-                    <div class="nav-right is-hidden-mobile">
-                        <div class="nav-item dropdown" :class="isActiveClass">
-                            <div class="dropdown-toggle">
-                                <span class="is-toggle" @click="toggleUserMenu">
-                                    <span class="icon">
-                                        <i class="fa fa-user-circle-o"></i>
-                                     </span>
-                                </span>
-                            </div>
+    <header class="app-header navbar">
+        <button
+            type="button"
+            class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" @click="toggleSidebar">
+            ☰
+        </button>
+        <a href="#" class="navbar-brand">
 
-                            <div class="dropdown-content">
-                                <nav class="panel">
-                                    <p class="panel-heading">
-                                        User
-                                    </p>
-                                    <a class="panel-block">
-                                        <span class="panel-icon">
-                                            <i class="fa fa-user-circle"></i>
-                                        </span>
-                                        Profile
-                                    </a>
-                                    <a class="panel-block">
-                                        <span class="panel-icon">
-                                            <i class="fa fa-star"></i>
-                                        </span>
-                                        View Site
-                                    </a>
-                                    <a class="panel-block">
-                                        <span class="panel-icon">
-                                            <i class="fa fa-arrows-alt"></i>
-                                        </span>
-                                        Toggle FullScreen
-                                    </a>
-                                    <a class="panel-block">
-                                        <span class="panel-icon">
-                                            <i class="fa fa-sign-out"></i>
-                                        </span>
-                                        Sign Out
-                                    </a>
-                                </nav>
-                        </div>
-                        </div>
+        </a>
+        <ul class="nav navbar-nav hidden-md-down">
+            <li class="nav-item">
+                <a href="#" class="nav-link navbar-toggler sidebar-toggler" @click="toggleSidebar">
+                    ☰
+                </a>
+            </li>
+            <li class="nav-item px-1">
+                <router-link :to="{name: 'dashboard.index'}" class="nav-link">
+                    Dashboard
+                </router-link>
+            </li>
+            <li class="nav-item px-1">
+                <router-link :to="{name: 'studio.index'}" class="nav-link">
+                    Studio
+                </router-link>
+            </li>
+            <li class="nav-item px-1">
+                <router-link :to="{name: 'analytics.index'}" class="nav-link">
+                    Analytics
+                </router-link>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav ml-auto" style="margin-right: 10px">
+            <li class="nav-item dropdown hidden-md-down" :class="isAlertsDropdownOpenClass">
+                <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" @click="toggleAlertsDropdown">
+                    <i class="icon-bell"></i>
+                    <span class="badge badge-pill badge-danger">5</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                    <div class="dropdown-header text-center">
+                        <strong>You have 5 notifications</strong>
                     </div>
-                    <div class="nav-item is-hidden-tablet">
-                        <span class="is-toggle" @click="toggleUserMenu">
-                            <span class="icon">
-                                <i class="fa fa-user-circle-o"></i>
-                            </span>
+
+                    <a href="#" class="dropdown-item">
+                        <i class="icon-user-follow text-success"></i> New user registered
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="icon-user-unfollow text-danger"></i> User deleted
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="icon-chart text-info"></i> Sales report is ready
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="icon-basket-loaded text-primary"></i> New client
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="icon-speedometer text-warning"></i> Server overloaded
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown" :class="isAdminDropdownOpenClass">
+                <a role="button" class="dropdown-toggle" @click="toggleAdminDropdown">
+                    <span>
+                        <img src="static/img/avatars/6.jpg" alt="admin@bootstrapmaster.com" class="img-avatar">
+                        <span class="hidden-md-down">
+                            admin
                         </span>
+                    </span>
+                    <span class="caret">
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-header text-center">
+                        <strong>Account</strong>
                     </div>
-                    <div class="nav-right nav-menu is-hidden-tablet" :class="isActiveClass">
-                        <a class="nav-item">
-                          Profile
-                        </a>
-                        <a class="nav-item">
-                          View Site
-                        </a>
-                        <a class="nav-item">
-                          Sign Out
-                        </a>
-                    </div>
-                    <!-- <div class="nav-right nav-menu is-hidden-mobile">
-                        <div class="dropdown" :class="isOpenClass">
-                            <div class="box dropdown-content">
-                                <div class="">
-                                  I iz a dropdown.
-                                </div>
-                            </div>
-                        </div>
-                      </div> -->
-                </nav>
-            </div>
-        </div>
-    </section>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-bell-o">
+                        </i>
+                        Updates
+                        <span class="badge badge-info">
+                            42
+                        </span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-envelope-o">
+                        </i>
+                        Messages
+                        <span class="badge badge-success">
+                            42
+                        </span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-tasks">
+                        </i>
+                        Tasks
+                        <span class="badge badge-danger">42</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-comments"></i>
+                        Comments
+                        <span class="badge badge-warning">42</span>
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+    </header>
 </template>
 
 <script>
-
     export default {
+        data() {
+            return {
+                isAdminDropdownOpen: false,
+                isAlertsDropdownOpen: false
+            }
+        },
         methods: {
             toggleSidebar() {
-                this.$store.commit('common/mutations/TOGGLE_SIDEBAR');
+                this.$store.commit('common/mutations/TOGGLE_SIDEBAR')
             },
-            toggleUserMenu() {
-                this.$store.commit('common/mutations/TOGGLE_NAV_USER_MENU');
+            toggleAdminDropdown() {
+                this.isAlertsDropdownOpen = false;
+                this.isAdminDropdownOpen = ! this.isAdminDropdownOpen;
+            },
+            toggleAlertsDropdown() {
+                this.isAdminDropdownOpen = false;
+
+                this.isAlertsDropdownOpen = ! this.isAlertsDropdownOpen;
             }
         },
         computed: {
-            isActiveClass() {
+            isAdminDropdownOpenClass() {
                 return {
-                    'is-active': this.isUserMenuOpen
+                    'open': this.isAdminDropdownOpen
                 }
             },
-            isUserMenuOpen() {
-                return this.$store.getters["common/getters/isUserNavMenuOpen"];
+            isAlertsDropdownOpenClass() {
+                return {
+                    'open': this.isAlertsDropdownOpen
+                }
             }
         }
     };
 </script>
 
-<style type="text/css">
+<style lang="scss">
 
 </style>

@@ -1,129 +1,191 @@
 <template>
-    <div class="container VuexDatatable">
-        <nav class="level is-marginless">
-            <div class="level-left">
-                <div class="level-item">
+    <div>
+        <div class="VuexDatatable__top-title">
+            <slot name="top-title">
+            </slot>
+        </div>
+        <div class="VueDatatable__table-wrapper">
+            <table :class="['table VueDatatable__table', css.tableClass]">
+                <thead>
+                    <tr>
+                        <template v-for="field in fields">
+                            <template v-if="field.visible">
+                                <template v-if="isSpecialField(field.name)">
+                                    <th v-if="extractName(field.name) == '__checkbox'"
+                                        :class="['vuetable-th-checkbox-'+trackBy, field.titleClass]">
+                                        <input
+                                            type="checkbox"
+                                            @change="toggleAllCheckboxes(field.name, $event)"
+                                            :checked="checkCheckboxesState(field.name)">
+                                    </th>
+                                    <th
+                                        v-if="extractName(field.name) == '__component'"
+                                        @click="orderBy(field, $event)"
+                                        :class="['vuetable-th-component-'+trackBy, field.titleClass, {'sortable': isSortable(field)}]">
+                                            {{ field.title || '' }}
+                                            <i
+                                                v-if="isInCurrentSortGroup(field) && field.title"
+                                                :class="sortIcon(field)"
+                                                :style="{opacity: sortIconOpacity(field)}">
+                                            </i>
+                                    </th>
+                                    <th
+                                        v-if="extractName(field.name) == '__slot'"
+                                        @click="orderBy(field, $event)"
+                                        :class="['vuetable-th-slot-'+extractArgs(field.name), field.titleClass, {'sortable': isSortable(field)}]">
+                                            {{ field.title || '' }}
+                                        <i
+                                            v-if="isInCurrentSortGroup(field) && field.title"
+                                            :class="sortIcon(field)"
+                                            :style="{opacity: sortIconOpacity(field)}">
+                                        </i>
+                                    </th>
+                                    <th
+                                        v-if="extractName(field.name) == '__sequence'"
+                                        :class="['vuetable-th-sequence', field.titleClass || '']" v-html="field.title || ''">
+                                    </th>
+                                    <th
+                                        v-if="notIn(extractName(field.name), ['__sequence', '__checkbox', '__component', '__slot'])"
+                                        :class="['vuetable-th-'+field.name, field.titleClass || '']" v-html="field.title || ''">
+                                    </th>
+                                </template>
+                                <template v-else>
+                                    <th @click="orderBy(field, $event)"
+                                    :id="'_' + field.name"
+                                    :class="['vuetable-th-'+field.name, field.titleClass,  {'sortable': isSortable(field)}]">
+                                    {{  getTitle(field) }}&nbsp;
+                                        <i v-if="isInCurrentSortGroup(field)" :class="sortIcon(field)" :style="{opacity: sortIconOpacity(field)}"></i>
+                                    </th>
+                                </template>
+                            </template>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody v-cloak>
+                    <template v-for="(item, index) in items">
+                        <tr
+                            @dblclick="onRowDoubleClicked(item, $event)"
+                            @click="onRowClicked(item, $event)"
+                            :render="onRowChanged(item)"
+                            :class="onRowClass(item, index)">
+                            <template v-for="field in fields">
+                                <template v-if="field.visible">
+                                    <template v-if="isSpecialField(field.name)">
+                                        <td
+                                            v-if="extractName(field.name) == '__sequence'"
+                                            :class="['vuetable-sequence', field.dataClass]"
+                                            v-html="tablePagination.from + index">
+                                        </td>
+                                        <td
+                                            v-if="extractName(field.name) == '__handle'"
+                                            :class="['vuetable-handle', field.dataClass]">
+                                            <i :class="['sort-handle', css.sortHandleIcon]"></i>
+                                        </td>
+                                        <td
+                                            v-if="extractName(field.name) == '__checkbox'"
+                                            :class="['vuetable-checkboxes', field.dataClass]">
+                                            <input type="checkbox"
+                                                @change="toggleCheckbox(item, field.name, $event)"
+                                                :checked="rowSelected(item, field.name)">
+                                        </td>
+                                        <td
+                                            v-if="extractName(field.name) === '__component'"
+                                            :class="['vuetable-component', field.dataClass]">
+                                            <component
+                                                :is="extractArgs(field.name)"
+                                                :row-data="item" :row-index="index">
+                                            </component>
+                                        </td>
+                                        <td
+                                            v-if="extractName(field.name) === '__slot'"
+                                            :class="['vuetable-slot', field.dataClass]">
+                                            <slot
+                                                :name="extractArgs(field.name)"
+                                                :row-data="item"
+                                                :row-index="index">
+                                            </slot>
+                                        </td>
+                                    </template>
+                                    <template v-else>
+                                        <td v-if="hasCallback(field)"
+                                            :class="field.dataClass"
+                                            @click="onCellClicked(item, field, $event)"
+                                            @dblclick="onCellDoubleClicked(item, field, $event)"
+                                            v-html="callCallback(field, item)">
+                                        </td>
+                                        <td v-else
+                                            :class="field.dataClass"
+                                            @click="onCellClicked(item, field, $event)"
+                                            @dblclick="onCellDoubleClicked(item, field, $event)"
+                                            v-html="getObjectValue(item, field.name, '')">
+                                        </td>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                        <template v-if="useDetailRow && extractName(detail.name) == '__slot'">
+                            <transition :name="detailRowTransition">
+                                <tr
+                                    v-if="isVisibleDetailRow(item[trackBy])"
+                                    @click="onDetailRowClick(item, $event)"
+                                    :class="[css.detailRowClass]">
+                                    <slot
+                                        :name="extractArgs(detail.name)"
+                                        :row-data="item"
+                                        :row-index="index">
+                                    </slot>
+                                </tr>
+                            </transition>
+                        </template>
+                    </template>
+                </tbody>
+            </table>
+        </div>
 
-                </div>
+        <slot name="bottom-bar">
+            <div style="display:flex; margin-top: 10px">
+                <div style="flex:1"></div>
+                <v-pagination
+                    @input="loadPage"
+                    v-bind:length.number="totalPages"
+                    :value="currentPage"
+                ></v-pagination>
             </div>
-            <div class="level-right">
-                <div class="">
-                    <bulma-pagination
-                        :vuex-pagination="vuexPagination"
-                        :vuex-load="vuexLoad">
-                    </bulma-pagination>
-            </div>
-        </nav>
-        <vuetable
-            class="Vuetable"
-            :vuex-data="vuexData"
-            :vuex-pagination="vuexPagination"
-            :vuex-load="vuexLoad"
-            :fields="fields"
-            :css="css"
-            :multi-sort="false"
-            :sort-order="sortOrder"
-        >
-            <template slot="actions" scope="props">
-                <div class="table-button-container">
-                    <button class="btn btn-default" @click="onClick('edit-item', props.rowData)"><i class="fa fa-edit"></i> View</button>&nbsp;&nbsp;
-                    <button class="btn btn-danger" @click="onClick('delete-item', props.rowData)"><i class="fa fa-remove"></i> Edit</button>&nbsp;&nbsp;
-                </div>
-            </template>
-        </vuetable>
-        <nav class="level is-marginless">
-            <div class="level-left">
-                <div class="level-item">
-
-                </div>
-            </div>
-            <div class="level-right">
-                <bulma-pagination-simple-nav
-                    :vuex-pagination="vuexPagination"
-                    :vuex-load="vuexLoad">
-                </bulma-pagination-simple-nav>
-            </div>
-        </nav>
+        </slot>
     </div>
 </template>
 
 <script>
-import Vuetable from 'dt/components/vuex-table-2/Vuetable';
-import BulmaPaginationSimpleNav from './BulmaPaginationSimpleNav';
-import BulmaPagination from './BulmaPagination';
-import RowActions from './RowActions'
-import DetailRow from './DetailRow'
-import FilterBar from './FilterBar'
+import DataTableMixin from "./DataTableMixin";
+import LoadDataMixin from "./LoadDataMixin";
+import DataQueryMixin from "./DataQueryMixin";
+import DetailRowMixin from "./DetailRowMixin";
+import OrderByMixin from "./OrderByMixin";
+import TableHandlersMixin from "./TableHandlersMixin";
+import PaginationMixin from './PaginationMixin'
 
 export default {
-    data() {
-        return {
-            css: {
-                tableClass: 'table is-bordered is-striped',
-                ascendingIcon: 'fa fa-chevron-up',
-                descendingIcon: 'fa fa-chevron-down',
-                sortHandleIcon: 'fa fa-bars',
-            }
-        }
-    },
-    props: {
-        fields: {
-            type: Array,
-            required: true
-        },
-        sortOrder: {
-            type: Array,
-            default: () => {
-                return [{
-                    field: 'id',
-                    sortField: 'id',
-                    direction: 'asc'
-                }]
-            }
-        },
-        vuexData: {
-            type: String,
-            required: true
-        },
-        vuexPagination: {
-            type: String,
-            required: true
-        },
-        vuexLoad: {
-            type: String,
-            required: true
-        }
-    },
-    methods: {
-        // onPaginationData(paginationData) {
-        //     this.$refs.pagination.setPaginationData(paginationData)
-        //     this.$refs.paginationInfo.setPaginationData(paginationData)
-        // },
-        // onChangePage(page) {
-        //     this.$refs.vuetable.changePage(page)
-        // },
-        // onCellClicked(data, field, event) {
-        //     console.log('cellClicked: ', field.name)
-        //     this.$refs.vuetable.toggleDetailRow(data.id)
-        // }
+    mixins: [
+        DataTableMixin,
+        LoadDataMixin,
+        OrderByMixin,
+        LoadDataMixin,
+        DataQueryMixin,
+        DetailRowMixin,
+        TableHandlersMixin,
+        PaginationMixin
+    ],
+    mounted() {
+        this.loadData();
     },
     components: {
-        Vuetable,
-        BulmaPagination,
-        BulmaPaginationSimpleNav,
-        FilterBar,
-        RowActions,
-        DetailRow
     },
 }
 </script>
 
 <style lang='scss'>
-.VuexDatatable{
-    overflow: hidden;
-
-}
-.Vuetable{
-    overflow: scroll;
+@import "./styles";
+.VuexDatatable__top-title {
+    margin-bottom: 10px;
 }
 </style>

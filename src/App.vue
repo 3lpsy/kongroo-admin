@@ -1,23 +1,12 @@
 <template>
-    <div id="app" class="app">
-        <router-view></router-view>
-    </div>
+    <router-view>
+    </router-view>
 </template>
 
 <script>
 
-export default {
-    components: {
-    },
-    methods: {
-    },
-    created () {
-    }
-}
 </script>
 
-<style lang="sass">
-
-@import 'assets/app'
-
+<style lang="scss">
+    @import '~assets/sass/app.scss';
 </style>

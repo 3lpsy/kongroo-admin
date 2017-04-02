@@ -29,6 +29,7 @@ module.exports = {
     "no-trailing-spaces": "off",
     "space-unary-ops": "off",
     "no-useless-escape": "off",
+    "no-new": "off",
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
   }

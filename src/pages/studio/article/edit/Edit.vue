@@ -85,7 +85,7 @@
 import PageContainer from 'pages/studio/container/Container';
 import Taggable from 'tag/components/forms/Taggable';
 import Categorical from 'category/components/forms/Categorical';
-import VueDatepicker from 'vue-bulma-datepicker';
+import VueDatepicker from 'vue-datepicker';
 
 export default {
     data() {

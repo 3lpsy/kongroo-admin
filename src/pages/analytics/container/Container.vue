@@ -1,8 +1,7 @@
 <template>
-    <app-container :footer="true" :sidebar="true">
-            <slot name="page-nav"></slot>
-            <slot></slot>
-    </app-container>
+    <div class="">
+        <slot></slot>
+    </div>
 </template>
 
 <script>

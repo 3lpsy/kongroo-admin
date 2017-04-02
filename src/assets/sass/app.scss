@@ -1,0 +1,128 @@
+// body, #app, .App--base {
+//     height: 100%;
+// }
+$fa-font-path: "~font-awesome/fonts";
+
+@import "~font-awesome/scss/font-awesome";
+
+.ArticleShow__title {
+    margin-bottom: 0px;
+}
+
+@charset "utf-8";
+
+@import "./vendor/core-ui/bootstrap-variables";
+@import "./vendor/core-ui/bootstrap_src/variables";
+@import "./variables";
+@import "./vendor/core-ui/bootstrap_src/mixins";
+@import "./vendor/core-ui/core/mixins";
+
+// Reset and dependencies
+@import "./vendor/core-ui/bootstrap_src/normalize";
+@import "./vendor/core-ui/bootstrap_src/print";
+
+// Core CSS
+@import "./vendor/core-ui/bootstrap_src/reboot";
+@import "./vendor/core-ui/bootstrap_src/type";
+@import "./vendor/core-ui/bootstrap_src/images";
+@import "./vendor/core-ui/bootstrap_src/code";
+@import "./vendor/core-ui/bootstrap_src/grid";
+
+@import "./vendor/core-ui/bootstrap_src/tables";
+@import "./vendor/core-ui/bootstrap_custom/tables";
+
+@import "./vendor/core-ui/bootstrap_src/forms";
+
+@import "./vendor/core-ui/bootstrap_src/buttons";
+@import "./vendor/core-ui/bootstrap_custom/buttons";
+
+// Components
+@import "./vendor/core-ui/bootstrap_src/transitions";
+
+@import "./vendor/core-ui/bootstrap_src/dropdown";
+@import "./vendor/core-ui/bootstrap_custom/dropdown";
+
+@import "./vendor/core-ui/bootstrap_src/button-group";
+
+@import "./vendor/core-ui/bootstrap_src/input-group";
+@import "./vendor/core-ui/bootstrap_custom/input-group";
+
+//@import "./vendor/core-ui/custom-forms";
+
+@import "./vendor/core-ui/bootstrap_src/nav";
+@import "./vendor/core-ui/bootstrap_custom/nav";
+
+@import "./vendor/core-ui/bootstrap_src/navbar";
+@import "./components/navbar";
+
+@import "./vendor/core-ui/bootstrap_src/card";
+@import "./vendor/core-ui/bootstrap_custom/card";
+
+@import "./vendor/core-ui/bootstrap_src/breadcrumb";
+@import "./vendor/core-ui/bootstrap_custom/breadcrumb";
+
+@import "./vendor/core-ui/bootstrap_src/pagination";
+
+@import "./vendor/core-ui/bootstrap_src/badge";
+@import "./vendor/core-ui/bootstrap_custom/badge";
+
+//@import "./vendor/core-ui/jumbotron";
+@import "./vendor/core-ui/bootstrap_src/alert";
+
+@import "./vendor/core-ui/bootstrap_src/progress";
+@import "./vendor/core-ui/bootstrap_custom/progress";
+
+@import "./vendor/core-ui/bootstrap_src/media";
+@import "./vendor/core-ui/bootstrap_src/list-group";
+@import "./vendor/core-ui/bootstrap_src/responsive-embed";
+@import "./vendor/core-ui/bootstrap_src/close";
+
+// Components w/ JavaScript
+@import "./vendor/core-ui/bootstrap_src/modal";
+@import "./vendor/core-ui/bootstrap_custom/modal";
+
+@import "./vendor/core-ui/bootstrap_src/tooltip";
+@import "./vendor/core-ui/bootstrap_src/popover";
+@import "./vendor/core-ui/bootstrap_src/carousel";
+
+// Utility classes
+@import "./vendor/core-ui/bootstrap_src/utilities";
+
+// Vendors Styles
+@import "./vendor/core-ui/vendors/vendors";
+
+// CoreUI Styles
+// Additional typography
+@import "./vendor/core-ui/core/typography";
+
+// Animations
+@import "./vendor/core-ui/core/animate";
+
+// Core files
+@import "./vendor/core-ui/core/grid";
+@import "./vendor/core-ui/core/layout";
+@import "./vendor/core-ui/core/navigation";
+@import "./vendor/core-ui/core/aside";
+@import "./vendor/core-ui/core/loading";
+@import "./vendor/core-ui/core/widgets";
+@import "./vendor/core-ui/core/footer";
+@import "./vendor/core-ui/core/buttons";
+@import "./vendor/core-ui/core/others";
+@import "./vendor/core-ui/core/breadcrumb-menu";
+@import "./vendor/core-ui/core/avatars";
+@import "./vendor/core-ui/core/callout";
+@import "./vendor/core-ui/core/switches";
+@import "./vendor/core-ui/core/charts";
+@import "./vendor/core-ui/core/utilities-border";
+
+// Temporary fixes
+@import "./vendor/core-ui/core/temp";
+
+// Mobile View
+@import "./vendor/core-ui/core/mobile";
+
+// Right-to-left
+@import "./vendor/core-ui/core/rtl";
+
+// Custom styles
+@import "./vendor/core-ui/custom";

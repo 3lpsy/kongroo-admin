@@ -16,8 +16,6 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'vue': 'vue/dist/vue.common.js',
-    //   'appi': path.resolve(__dirname, '../../appi/'),
-      'vb': path.resolve(__dirname, '../../vb'),
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'api': path.resolve(__dirname, '../src/api'),
@@ -33,7 +31,6 @@ module.exports = {
       'filters': path.resolve(__dirname, '../src/filters'),
       'article': path.resolve(__dirname, '../src/modules/article'),
       'dt': path.resolve(__dirname, '../src/modules/dt'),
-
       'series': path.resolve(__dirname, '../src/modules/series'),
       'tag': path.resolve(__dirname, '../src/modules/tag'),
       'category': path.resolve(__dirname, '../src/modules/category')

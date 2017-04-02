@@ -1,15 +1,7 @@
+import {app} from './root'
 
-import Vue from 'vue'
-import store from './store';
-import router from './router'
-import { sync } from 'vuex-router-sync'
-import App from './App';
-import VbComponents from 'vb';
-sync(store, router);
+// prime the store with server-initialized state.
+// the state is determined during SSR and inlined in the page markup.
 
-Vue.use(VbComponents);
-new Vue({
-    router,
-    store,
-    ...App // Object spread copying everything from App.vue
-}).$mount('app');
+// actually mount to DOM
+app.$mount('root')

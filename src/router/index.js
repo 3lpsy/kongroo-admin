@@ -6,13 +6,25 @@ Vue.use(Router);
 import * as dashboard from "./dashboard";
 import * as studio from "./studio";
 import * as analytics from "./analytics";
+import Container from 'common/components/container/Container.vue';
 
 
 let routes = [
-    dashboard.index,
-    studio.index,
-    studio.article.edit,
-    analytics.index,
+    {
+        path: '/',
+        redirect: '/dashboard',
+        name: 'dashboard.container',
+        meta: {
+            label: 'Dashboard'
+        },
+        component: Container,
+        children: [
+            dashboard.index,
+            studio.index,
+
+            analytics.index,
+        ]
+    },
     {
         path: "/",
         redirect: "/dashboard"

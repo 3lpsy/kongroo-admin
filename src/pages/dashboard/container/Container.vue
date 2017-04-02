@@ -1,8 +1,7 @@
 <template>
-    <app-container :footer="true" :sidebar="true">
-            <slot name="page-nav"></slot>
-            <slot></slot>
-    </app-container>
+    <div class="">
+        <slot></slot>
+    </div>
 </template>
 
 <script>
@@ -22,5 +21,10 @@ export default {
 </script>
 
 <style type="text/css">
-
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+      opacity: 0
+    }
 </style>

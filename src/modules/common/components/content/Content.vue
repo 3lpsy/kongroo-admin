@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="app-content" :class="classObj">
+    <div class="container-fluid">
         <slot></slot>
     </div>
 </template>
@@ -7,14 +7,6 @@
 <script>
 export default {
     computed: {
-        classObj() {
-            return {
-                'is-expand': this.isCollapse
-            }
-        },
-        isCollapse() {
-            return this.$store.getters["common/getters/isSidebarCollapse"];
-        }
     }
 }
 </script>

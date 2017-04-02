@@ -1,64 +1,122 @@
 <template lang="html">
     <vuex-datatable
-        class="container"
         :fields="fields"
-        vuex-data="dt/getters/article/articles"
-        vuex-pagination="dt/getters/article/pagination"
-        vuex-load="dt/actions/article/fetchArticles">
-        <!-- <template slot="actions" scope="props">
-            <div class="table-button-container">
-                <button class="btn btn-default" @click="onClick('edit-item', props.rowData)"><i class="fa fa-edit"></i> View</button>&nbsp;&nbsp;
-                <button class="btn btn-danger" @click="onClick('delete-item', props.rowData)"><i class="fa fa-remove"></i> Edit</button>&nbsp;&nbsp;
+        :detail="detail"
+        :sort-order="sortOrder"
+        :visible-detail-rows="visibleDetailRows"
+        @table:cell-dblclicked="toggleDetailRow"
+        :items="items"
+        :pagination="pagination"
+        vuex-load="dt/actions/article/fetchArticles"
+        >
+            <div slot="top-title">
+                <slot name="top-title">
+                    <h1 class="title">
+                        Articles
+                    </h1>
+                </slot>
             </div>
-        </template> -->
+            <template slot="detail" scope="props">
+                <td :colspan="fields.length">
+                    {{props.rowData.title}}
+                </td>
+            </template>
+            <template slot="actions" scope="props">
+                <p class="block">
+                    <a class="button is-primary">
+                        <span class="VueDatatable__table--action-icon icon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                    </a>
+                </p>
+            </template>
     </vuex-datatable>
 </template>
 
 
 <script>
-    import VuexDatatable from 'dt/components/data-table/VuexDatatable';
-    export default {
-        data() {
-            return {
-                fields: [
-                    {
-                        name: 'id',
-                        field: 'id',
-                        sortField: 'id',
-                    },
-                    {
-                        name: 'title',
-                        field: 'title',
-                        sortField: 'title',
-                    },
-                    {
-                        name: 'subTitle',
-                        field: 'subTitle',
-                        sortField: 'sub_title',
-                    },
-                    {
-                        name: 'slug',
-                        sortField: 'slug',
-                    },
-                    {
-                        name: 'views',
-                        sortField: 'views',
-                    },
-                    {
-                        name: '__slot:actions',
-                        title: 'Actions',
-
+import moment from 'moment';
+import VuexDatatable from 'dt/components/data-table/VuexDatatable';
+export default {
+    data() {
+        return {
+            fields: [
+                {
+                    name: 'id',
+                    field: 'id',
+                    sortField: 'id',
+                },
+                {
+                    name: 'title',
+                    field: 'title',
+                    sortField: 'title',
+                },
+                {
+                    name: 'subTitle',
+                    field: 'subTitle',
+                    sortField: 'sub_title',
+                },
+                {
+                    name: 'slug',
+                    sortField: 'slug',
+                },
+                {
+                    name: 'views',
+                    sortField: 'views',
+                },
+                {
+                    name: 'createdAt',
+                    title: 'Created',
+                    sortField: 'createdAt',
+                    callback: (value) => {
+                        return moment(value, 'X').format('MM/DD/YYYY')
                     }
-                ]
-            }
-        },
-        components: {
-            VuexDatatable
+                },
+                {
+                    title: 'Actions',
+                    name: '__slot:actions',
+                }
+            ],
+            detail: {
+                name: '__slot:detail',
+                use: true
+            },
+            sortOrder: [{
+                field: 'id',
+                sortField: 'id',
+                direction: 'desc'
+            }],
+            visibleDetailRows: []
         }
+    },
+    computed: {
+        items() {
+            return this.$store.getters["dt/getters/article/articles"]
+        },
+        pagination() {
+            return this.$store.getters["dt/getters/article/pagination"]
+        },
+
+    },
+    methods: {
+        toggleDetailRow(item) {
+            let trackById = item.id;
+            if (this.visibleDetailRows.includes(trackById)) {
+                let index = this.visibleDetailRows.indexOf(trackById);
+                // console.log(index, this.visibleDetailRows.splice(index, 1));
+                this.visibleDetailRows.splice(index, 1);
+            } else {
+                this.visibleDetailRows.push(trackById);
+            }
+        }
+    },
+    components: {
+        VuexDatatable
     }
+}
 </script>
 
 
-<style lang="css">
+<style lang="scss">
 
 </style>
